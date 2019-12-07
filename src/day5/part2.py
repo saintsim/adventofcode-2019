@@ -43,7 +43,7 @@ def get_token(location, mode):
         pass
 
 
-def diagnostic_program(input):
+def diagnostic_program(input, user_inputs):
     global tokens
     tokens = input
     # [99] means that the program is finished
@@ -65,15 +65,15 @@ def diagnostic_program(input):
     #     it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
     # [8] is equals: if the first parameter is equal to the second parameter,
     #     it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
-    user_input = 5  # change to 5 for real example
     index = 0
+    output = ''
     while True:
         element = tokens[index]
         # print('El -> ' + str(element))
         a_mode, b_mode, c_mode, opcode = token_parse(element)
         shift = 0
         if opcode == 99:
-            return tokens[0]
+            return output
         elif opcode == 1:
             tokens[tokens[index+3]] = get_token(tokens[index+1], c_mode) + get_token(tokens[index+2], b_mode)
             shift = 4
@@ -81,11 +81,11 @@ def diagnostic_program(input):
             tokens[tokens[index+3]] = get_token(tokens[index+1], c_mode) * get_token(tokens[index+2], b_mode)
             shift = 4
         elif opcode == 3:  # magic input number
-            tokens[tokens[index+1]] = user_input
+            tokens[tokens[index+1]] = user_inputs.pop(0)
             shift = 2
         elif opcode == 4:
             to_print = get_token(tokens[index+1], c_mode)
-            print(to_print)
+            output = to_print
             shift = 2
         elif opcode == 5:
             first_param = get_token(tokens[index+1], c_mode)
@@ -115,4 +115,4 @@ def diagnostic_program(input):
 if __name__ == '__main__':
     with open('input', 'r') as file:
         input = file.readlines()[0]
-        print('Result: ' + str(diagnostic_program(list(map(int, input.split(","))))))
+        print('Result: ' + str(diagnostic_program(list(map(int, input.split(","))), [5])))
