@@ -13,11 +13,11 @@ def amplification(input):
         print('Phase: ' + str(setting))
         user_input = 0
         # amp_name, input, initial_inputs
-        ampA = amp.AmplifierController('ampA', list(input), [setting[0], user_input])
-        ampB = amp.AmplifierController('ampB', list(input), [setting[1]])
-        ampC = amp.AmplifierController('ampC', list(input), [setting[2]])
-        ampD = amp.AmplifierController('ampD', list(input), [setting[3]])
-        ampE = amp.AmplifierController('ampE', list(input), [setting[4]])
+        ampA = amp.AmplifierController('ampA', input, [setting[0], user_input])
+        ampB = amp.AmplifierController('ampB', input, [setting[1]])
+        ampC = amp.AmplifierController('ampC', input, [setting[2]])
+        ampD = amp.AmplifierController('ampD', input, [setting[3]])
+        ampE = amp.AmplifierController('ampE', input, [setting[4]])
 
         output_to_give_to_next = []
         while True:

@@ -5,7 +5,7 @@ class AmplifierController:
 
     def __init__(self, amp_name, input, initial_inputs):
         self.amp_name = amp_name
-        self.tokens = input
+        self.tokens = list(input)
         self.inputs = []
         self.add_inputs(initial_inputs)
         self.index = 0

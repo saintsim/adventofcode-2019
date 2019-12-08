@@ -3,16 +3,14 @@
 import collections
 
 
-def find_pixels(pixels):
-    size_x = 25
-    size_y = 6
-    area = size_x * size_y
-    pixel_index = 0
-    zero_count = 99
+def find_pixels(pixels, size_x, size_y):
+    number_of_pixels_per_layer = size_x * size_y
+    zero_count = number_of_pixels_per_layer  # this is the max number of 0's possible
     least_zero_layer = []
+    pixel_index = 0
     while pixel_index < len(pixels):
         layer = []
-        while len(layer) < area:
+        while len(layer) < number_of_pixels_per_layer:
             layer.append(pixels[pixel_index])
             pixel_index += 1
         counter = collections.Counter(layer)
@@ -23,5 +21,5 @@ def find_pixels(pixels):
 
 
 with open('input', 'r') as file:
-    lines = file.readlines()[0]
-    print('Result: ' + str(find_pixels(lines)))
+    input_line = file.readlines()[0]
+    print('Result: ' + str(find_pixels(input_line, 25, 6)))
