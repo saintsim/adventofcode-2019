@@ -20,10 +20,10 @@ def decode_image(layers, number_of_pixels_per_layer):
     final_image = []
     depth = len(layers)
     # figure out the final colour for each pixel in the final image
-    for pixel_index in range(0, number_of_pixels_per_layer):
+    for pixel_index in range(number_of_pixels_per_layer):
         pixel_colour = ''
         # go over each layer to find this out, stop when we have white or black
-        for depth_index in range(0, depth):
+        for depth_index in range(depth):
             if layers[depth_index][pixel_index] == '0':
                 pixel_colour = '0'
                 break
