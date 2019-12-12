@@ -3,7 +3,7 @@
 
 class BoostProgram:
 
-    def __init__(self, input, initial_inputs):
+    def __init__(self, input, initial_inputs, debug=False):
         # tokens up to input size + a dictionary for overflow
         self.tokens = list(input)
         self.overflow_tokens = {}
@@ -15,6 +15,8 @@ class BoostProgram:
 
         # keep track of the index and relative base
         self.relative_base = 0
+
+        self.debug = debug
 
     def add_inputs(self, inputs):
         for input in inputs:
@@ -40,7 +42,7 @@ class BoostProgram:
            b_mode = token_str[-4:-3]
 
         if len(token_str) > 4:  # e.g. 11002
-           c_mode = token_str[-5:-4]
+           a_mode = token_str[-5:-4]
 
         if len(token_str) > 5:
             raise ValueError(
@@ -105,11 +107,13 @@ class BoostProgram:
         print_num = 1
         while True:
             element = self.read_token(index)
-            print(str(print_num) + 'El -> ' + str(element))
+            if self.debug:
+                print(str(print_num) + 'El -> ' + str(element))
             print_num += 1
             a_mode, b_mode, c_mode, opcode = self.token_parse(element)
             if opcode == 99:
-                print('halting -->')
+                if self.debug:
+                    print('halting -->')
                 return self.outputs
             elif opcode == 1:
                 if a_mode == 2:
@@ -130,9 +134,9 @@ class BoostProgram:
                 index += 4
             elif opcode == 3:  # magic input number
                 if c_mode == 2:
-                    self.write_token(self.read_token(index + 1) + self.relative_base, 1)
+                    self.write_token(self.read_token(index + 1) + self.relative_base, self.inputs.pop(0))
                 else:
-                    self.write_token(self.read_token(self.read_token(index+1)), 1)
+                    self.write_token(self.read_token(self.read_token(index+1)), self.inputs.pop(0))
                 index += 2
             elif opcode == 4:
                 to_print = self.get_token(index+1, c_mode)
@@ -163,7 +167,7 @@ class BoostProgram:
             elif opcode == 8:
                 first_param = self.get_token(index + 1, c_mode)
                 second_param = self.get_token(index + 2, b_mode)
-                if c_mode == 2:
+                if a_mode == 2:
                     self.write_token(self.read_token(index + 3) + self.relative_base,
                                      1 if first_param == second_param else 0)
                 else:
