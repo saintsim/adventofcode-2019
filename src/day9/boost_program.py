@@ -3,7 +3,7 @@
 
 class BoostProgram:
 
-    def __init__(self, input, initial_inputs, debug=False):
+    def __init__(self, input, initial_inputs, print_output_func=lambda: None, debug=False):
         # tokens up to input size + a dictionary for overflow
         self.tokens = list(input)
         self.overflow_tokens = {}
@@ -16,6 +16,7 @@ class BoostProgram:
         # keep track of the index and relative base
         self.relative_base = 0
 
+        self.print_output_func = print_output_func
         self.debug = debug
 
     def add_inputs(self, inputs):
@@ -133,10 +134,18 @@ class BoostProgram:
 
                 index += 4
             elif opcode == 3:  # magic input number
+                #  if no inputs specified then ask user
+                if not len(self.inputs):
+                    next_move = self.print_output_func(list(self.outputs))
+                    self.inputs.append(next_move)
+                    # self.inputs.append(int(input('Joystick move (-1 for left, 0 stay, 1 for right): ')))
+                else:
+                    pass
+                #self.inputs = [1]
                 if c_mode == 2:
                     self.write_token(self.read_token(index + 1) + self.relative_base, self.inputs.pop(0))
                 else:
-                    self.write_token(self.read_token(self.read_token(index+1)), self.inputs.pop(0))
+                    self.write_token(self.read_token(index+1), self.inputs.pop(0))
                 index += 2
             elif opcode == 4:
                 to_print = self.get_token(index+1, c_mode)
