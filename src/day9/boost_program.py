@@ -150,7 +150,8 @@ class BoostProgram:
             elif opcode == 4:
                 to_print = self.get_token(index+1, c_mode)
                 self.outputs.append(to_print)
-                print(to_print)
+                if self.debug:
+                    print(to_print)
                 index += 2
             elif opcode == 5:
                 first_param = self.get_token(index+1, c_mode)
