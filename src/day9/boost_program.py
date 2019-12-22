@@ -3,7 +3,7 @@
 
 class BoostProgram:
 
-    def __init__(self, input, initial_inputs, print_output_func=lambda: None, debug=False):
+    def __init__(self, input, initial_inputs, next_move_func=lambda: None, debug=False, ascii_mode=False):
         # tokens up to input size + a dictionary for overflow
         self.tokens = list(input)
         self.overflow_tokens = {}
@@ -16,8 +16,9 @@ class BoostProgram:
         # keep track of the index and relative base
         self.relative_base = 0
 
-        self.print_output_func = print_output_func
+        self.next_move_func = next_move_func
         self.debug = debug
+        self.ascii_mode = ascii_mode
 
     def add_inputs(self, inputs):
         for input in inputs:
@@ -125,19 +126,25 @@ class BoostProgram:
                                      self.get_token(index+1, c_mode) + self.get_token(index+2, b_mode))
                 index += 4
             elif opcode == 2:
-                if a_mode == 2:
-                    self.write_token(self.read_token(index+3) + self.relative_base,
-                                     self.get_token(index+1, c_mode) * self.get_token(index+2, b_mode))
-                else:
-                    self.write_token(self.read_token(index+3),
-                                     self.get_token(index+1, c_mode) * self.get_token(index+2, b_mode))
-
+                try:
+                    if a_mode == 2:
+                        self.write_token(self.read_token(index+3) + self.relative_base,
+                                         self.get_token(index+1, c_mode) * self.get_token(index+2, b_mode))
+                    else:
+                        self.write_token(self.read_token(index+3),
+                                         self.get_token(index+1, c_mode) * self.get_token(index+2, b_mode))
+                except:
+                    pass
                 index += 4
             elif opcode == 3:  # magic input number
                 #  if no inputs specified then ask user
                 if not len(self.inputs):
-                    next_move = self.print_output_func(list(self.outputs))
-                    self.inputs.append(next_move)
+                    next_moves = self.next_move_func(list(self.outputs))
+                    if type(next_moves) is list:
+                        for next_move in next_moves:
+                            self.inputs.append(next_move)
+                    else:
+                        self.inputs.append(next_moves)
                     # self.inputs.append(int(input('Joystick move (-1 for left, 0 stay, 1 for right): ')))
                 else:
                     pass
@@ -150,6 +157,8 @@ class BoostProgram:
             elif opcode == 4:
                 to_print = self.get_token(index+1, c_mode)
                 self.outputs.append(to_print)
+                if self.ascii_mode:
+                    print(str(chr(to_print)), end='')
                 if self.debug:
                     print(to_print)
                 index += 2
