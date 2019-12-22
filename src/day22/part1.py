@@ -28,64 +28,64 @@ they're still in factory order, with 0 on the top, then 1, then 2, and so on
 
 '''
 
-DECK = []
 
+class Deck:
 
-def create_deck(number_of_cards, default_value=''):
-    new_deck = []
-    for i in range(number_of_cards):
-        if default_value != '':
-            new_deck.append(default_value)
-        else:
-            new_deck.append(i)
-    return new_deck
+    def __init__(self, number_of_cards, rules):
+        self.cards = Deck.create_deck(number_of_cards)
+        self.shuffle_rules = rules
 
-
-def apply_rule(rule):
-    global DECK
-    if rule.startswith('deal into new stack'):
-        DECK.reverse()
-    elif rule.startswith('cut'):
-        _, n, _ = re.split('cut (.+)', rule)
-        n = int(n)
-        if n > 0:
-            DECK = DECK[n:] + DECK[0:n]
-        else:
-            DECK = DECK[len(DECK) - abs(n):] + DECK[0:len(DECK)-abs(n)]
-        pass
-    elif rule.startswith('deal with increment'):
-        _, n, _ = re.split('deal with increment (.+)', rule)
-        n = int(n)
-        new_deck = create_deck(len(DECK), 'NULL')
-        deck_index = 0
-        for idx in range(len(DECK)):
-            if deck_index < len(DECK):
-                new_deck[deck_index] = DECK[idx]
+    @staticmethod
+    def create_deck(number_of_cards, default_value=''):
+        new_deck = []
+        for i in range(number_of_cards):
+            if default_value != '':
+                new_deck.append(default_value)
             else:
-                new_deck[(deck_index%len(DECK))] = DECK[idx]
-                deck_index = (deck_index%len(DECK))
-            deck_index += n
-        DECK = list(new_deck)
-    else:
-        Exception('Invalid rule')
+                new_deck.append(i)
+        return new_deck
 
+    def apply_rule(self, rule):
+        if rule.startswith('deal into new stack'):
+            self.cards.reverse()
+        elif rule.startswith('cut'):
+            _, n, _ = re.split('cut (.+)', rule)
+            n = int(n)
+            if n > 0:
+                self.cards = self.cards[n:] + self.cards[0:n]
+            else:
+                self.cards = self.cards[len(self.cards) - abs(n):] + self.cards[0:len(self.cards)-abs(n)]
+            pass
+        elif rule.startswith('deal with increment'):
+            _, n, _ = re.split('deal with increment (.+)', rule)
+            n = int(n)
+            new_deck = Deck.create_deck(len(self.cards), 'NULL')
+            deck_index = 0
+            for idx in range(len(self.cards)):
+                if deck_index < len(self.cards):
+                    new_deck[deck_index] = self.cards[idx]
+                else:
+                    new_deck[(deck_index%len(self.cards))] = self.cards[idx]
+                    deck_index = (deck_index%len(self.cards))
+                deck_index += n
+            self.cards = list(new_deck)
+        else:
+            Exception('Invalid rule')
 
-def shuffle_cards(shuffle_rules, number_of_cards):
-    global DECK
-    DECK = create_deck(number_of_cards)
-    for rule in shuffle_rules:
-        apply_rule(rule)
-    return str(DECK)
+    def shuffle_cards(self):
+        for rule in self.shuffle_rules:
+            self.apply_rule(rule)
+        return str(self.cards)
 
-
-def find_card(card_to_find):
-    for idx, el in enumerate(DECK):
-        if el == card_to_find:
-            return idx
+    def find_card(self, card_to_find):
+        for idx, el in enumerate(self.cards):
+            if el == card_to_find:
+                return idx
 
 
 if __name__ == '__main__':
     with open('input', 'r') as file:
         input = file.readlines()
-        print('After shuffling: ' + str(shuffle_cards(input, 10007)))
-        print('Card found is: ' + str(find_card(2019)))
+        deck = Deck(10007, input)
+        print('After shuffling: ' + str(deck.shuffle_cards()))
+        print('Card found is: ' + str(deck.find_card(2019)))
