@@ -33,16 +33,13 @@ def instructions_to_ascii(instructions):
 
 
 def get_input(_):
-    input = 'NOT A J\n'\
+    input = 'NOT C J\n' \
+            'NOT B T\n' \
+            'OR T J\n' \
+            'NOT A T\n' \
+            'OR T J\n' \
+            'AND D J\n' \
             'WALK\n'
-#
-# 'NOT A J\n' \
-#             'NOT B T\n' \
-#             'OR T J\n' \
-#             'NOT C T\n' \
-#             'OR T J\n' \
-#             'NOT D T\n' \
-#             'OR T J\n' \
     return instructions_to_ascii(input)
 
 

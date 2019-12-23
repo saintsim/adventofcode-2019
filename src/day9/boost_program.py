@@ -158,7 +158,10 @@ class BoostProgram:
                 to_print = self.get_token(index+1, c_mode)
                 self.outputs.append(to_print)
                 if self.ascii_mode:
-                    print(str(chr(to_print)), end='')
+                    try:
+                        print(str(chr(to_print)), end='')
+                    except ValueError:
+                        print(str(to_print), end='')
                 if self.debug:
                     print(to_print)
                 index += 2
