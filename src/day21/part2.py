@@ -26,6 +26,8 @@ Register A indicates whether there is ground 1 tiles away.
 Register B indicates whether there is ground 2 tiles away.
 Register C indicates whether there is ground 3 tiles away.
 Register D indicates whether there is ground 4 tiles away.
+
+NEW:
 Register E indicates whether there is ground 5 tiles away.
 Register F indicates whether there is ground 6 tiles away.
 Register G indicates whether there is ground 7 tiles away.
@@ -40,6 +42,24 @@ def instructions_to_ascii(instructions):
         asciis.append(int(ord(str(i))))
     return asciis
 
+'''
+Jump as soon as there is no hole 4 away (3 from whole, or 2 or 1)
+            'NOT C J\n' \ <- hole 3 away
+            'NOT B T\n' \ <- 2 away
+            'OR T J\n' \ <- hole 3 or 2 away?
+            'NOT A T\n' \ <- hole 1 away?
+            'OR T J\n' \ <- hole 3/2 or 1 away?
+            'AND D J\n' \  <- only jump if no hole 4 away
+
+If we intend to jump, and we find a hole 5 away, check no hole 8 away too, hold off jumping if so
+            'NOT E T\n' \ <- hole 5 away?
+            'NOT T T\n' \ <- reverse it
+            'OR H T\n' \  <- ground 5 or 8 away?
+            'AND T J\n' \ <- make sure ground for one of those if jumping
+'''
+
+# max 15 instructions
+
 
 def get_input(_):
     input = 'NOT C J\n' \
@@ -48,6 +68,10 @@ def get_input(_):
             'NOT A T\n' \
             'OR T J\n' \
             'AND D J\n' \
+            'NOT E T\n' \
+            'NOT T T\n' \
+            'OR H T\n' \
+            'AND T J\n' \
             'RUN\n'
     return instructions_to_ascii(input)
 
