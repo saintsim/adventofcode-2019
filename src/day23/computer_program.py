@@ -8,6 +8,8 @@ class ComputerProgram:
         self.tokens = list(input)
         self.overflow_tokens = {}
 
+        self.id = initial_inputs[0]
+
         # inputs and outputs storage
         self.inputs = []
         self.add_inputs(initial_inputs)
@@ -49,10 +51,10 @@ class ComputerProgram:
             c_mode = token_str[-3:-2]
 
         if len(token_str) > 3:  # e.g. 1002
-           b_mode = token_str[-4:-3]
+            b_mode = token_str[-4:-3]
 
         if len(token_str) > 4:  # e.g. 11002
-           a_mode = token_str[-5:-4]
+            a_mode = token_str[-5:-4]
 
         if len(token_str) > 5:
             raise ValueError(
@@ -194,7 +196,7 @@ class ComputerProgram:
                                      1 if first_param == second_param else 0)
                 else:
                     self.write_token(self.read_token(self.index + 3),
-                                     1 if first_param == second_param else 0 )
+                                     1 if first_param == second_param else 0)
                 self.index += 4
             elif opcode == 9:
                 first_param = self.get_token(self.index + 1, c_mode)

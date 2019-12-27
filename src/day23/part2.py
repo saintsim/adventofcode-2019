@@ -17,7 +17,7 @@ def make_network(input, number_of_computers):
         for computer in computers:
             if computer.state != 'finished':
                 finished = False
-            if len(computer.outputs) > 2:
+            while len(computer.outputs) > 2:
                 dest_comput = computer.outputs.pop(0)
                 new_inputs = [computer.outputs.pop(0), computer.outputs.pop(0)]
                 if dest_comput == 255:
