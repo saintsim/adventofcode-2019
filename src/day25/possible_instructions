@@ -1,0 +1,108 @@
+
+
+== Hull Breach ==
+You got in through a hole in the floor here. To keep your ship from also freezing, the hole has been sealed.
+
+Doors here lead:
+- east
+- south
+- west
+
+Command?
+Moving:  east
+
+
+
+== Gift Wrapping Center ==
+How else do you wrap presents on the go?
+
+Doors here lead:
+- west
+
+Items here:
+- weather machine
+
+Command?
+Taking:  weather machine
+
+You take the weather machine.
+
+Command?
+Moving:  west
+
+
+
+== Hull Breach ==
+You got in through a hole in the floor here. To keep your ship from also freezing, the hole has been sealed.
+
+Doors here lead:
+- east
+- south
+- west
+
+Command?
+Moving:  south
+
+
+
+== Warp Drive Maintenance ==
+It appears to be working normally.
+
+Doors here lead:
+- north
+- south
+
+Items here:
+- photons
+
+Command?
+Moving:  north
+
+
+
+== Hull Breach ==
+You got in through a hole in the floor here. To keep your ship from also freezing, the hole has been sealed.
+
+Doors here lead:
+- east
+- south
+- west
+
+Command?
+Moving:  west
+
+
+
+== Navigation ==
+Status: Stranded. Please supply measurements from fifty stars to recalibrate.
+
+Doors here lead:
+- north
+- east
+- west
+
+Items here:
+- giant electromagnet
+
+Command?
+Taking:  giant electromagnet
+
+You take the giant electromagnet.
+
+Command?
+Moving:  north
+
+The giant electromagnet is stuck to you.  You can't move!!
+
+Command?
+Moving:  east
+
+The giant electromagnet is stuck to you.  You can't move!!
+
+Command?
+Moving:  west
+
+The giant electromagnet is stuck to you.  You can't move!!
+
+Command?
+Moving:  north
